@@ -4,6 +4,8 @@
  * SPDX-License-Identifier: Apache-2.0
  * SPDX-License-Identifier: LGPL-3.0-or-later
  * SPDX-License-Identifier: MIT
+ *
+ * Source: https://github.com/dkosmari/wiiu-stdout
  */
 
 #ifdef __WIIU__

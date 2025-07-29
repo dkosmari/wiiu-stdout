@@ -19,6 +19,15 @@
 extern std::optional<std::mutex> whb_log_mutex;
 
 
+__attribute__(( __constructor__ (101) ))
+void
+init_whb_log_mutex(void)
+{
+    whb_log_mutex.emplace();
+}
+
+
+
 extern
 ssize_t
 devoptab_to_whb_log(struct _reent*,
@@ -27,12 +36,10 @@ devoptab_to_whb_log(struct _reent*,
                     size_t len);
 
 
-__attribute__(( __constructor__ ))
+__attribute__(( __constructor__ (102) ))
 void
 init_stderr()
 {
-    whb_log_mutex.emplace();
-
     static devoptab_t stderr_dev;
     stderr_dev.name = "STDERR";
     stderr_dev.structSize = sizeof stderr_dev;

@@ -34,7 +34,7 @@ namespace {
 }
 
 
-__attribute__ (( __constructor__ ))
+__attribute__ (( __constructor__ (101) ))
 void
 init_whb_log()
     noexcept
@@ -47,7 +47,7 @@ init_whb_log()
 }
 
 
-__attribute__ (( __destructor__ ))
+__attribute__ (( __destructor__ (101) ))
 void
 fini_whb_log()
     noexcept
@@ -92,7 +92,7 @@ devoptab_to_whb_log(struct _reent*,
 }
 
 
-__attribute__(( __constructor__ ))
+__attribute__(( __constructor__ (102) ))
 void
 init_stdout()
 {

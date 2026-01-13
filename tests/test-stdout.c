@@ -5,7 +5,8 @@
 #include <whb/proc.h>
 
 
-int main(void)
+int
+main(void)
 {
     printf("Hello world!\n");
     printf("Press any button to quit.\n");
@@ -21,6 +22,4 @@ int main(void)
             }
     }
     WHBProcShutdown();
-
-    return 0;
 }

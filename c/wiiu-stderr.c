@@ -1,5 +1,6 @@
 /*
- * Automatically redirect stdout to WHBLogWrite().
+ * Automatically redirect stderr to WHBLogWrite().
+ * Copyright 2026  Daniel K. O. (dkosmari)
  *
  * SPDX-License-Identifier: Apache-2.0
  * SPDX-License-Identifier: LGPL-3.0-or-later
@@ -15,33 +16,38 @@
 #include <sys/iosupport.h>      // devoptab_list, devoptab_t
 
 
-extern OSMutex whb_log_mutex;
+extern OSMutex* wiiu_whb_log_mutex;
+
+static OSMutex the_real_mutex;
 
 
 __attribute__(( __constructor__ (101) ))
 void
-init_whb_log_mutex(void)
+wiiu_init_wiiu_whb_log_mutex(void)
 {
-    OSInitMutex(&whb_log_mutex);
+    OSInitMutex(&the_real_mutex);
+    wiiu_whb_log_mutex = &the_real_mutex;
 }
 
 
 extern
 ssize_t
-devoptab_to_whb_log(struct _reent*,
-                    void*,
-                    const char* buf,
-                    size_t len);
+wiiu_devoptab_to_whb_log(struct _reent*,
+                         void*,
+                         const char* buf,
+                         size_t len);
+
+
+static devoptab_t stderr_dev;
 
 
 __attribute__(( __constructor__ (102) ))
 void
-init_stderr(void)
+wiiu_init_stderr(void)
 {
-    static devoptab_t stderr_dev;
     stderr_dev.name = "STDERR";
     stderr_dev.structSize = sizeof stderr_dev;
-    stderr_dev.write_r = devoptab_to_whb_log;
+    stderr_dev.write_r = wiiu_devoptab_to_whb_log;
     devoptab_list[STD_ERR] = &stderr_dev;
 }
 

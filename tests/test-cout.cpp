@@ -4,11 +4,13 @@
 #include <vpad/input.h>
 #include <whb/proc.h>
 
+
 using std::cout;
 using std::endl;
 
 
-int main()
+int
+main()
 {
     cout << "Hello world!" << endl;
     cout << "Press any button to quit." << endl;

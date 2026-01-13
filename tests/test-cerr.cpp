@@ -4,12 +4,14 @@
 #include <vpad/input.h>
 #include <whb/proc.h>
 
+
 using std::cout;
 using std::cerr;
 using std::endl;
 
 
-int main()
+int
+main()
 {
     cout << "Hello world!" << endl;
     cerr << "This is an ERROR message!" << endl;

@@ -5,7 +5,8 @@
 #include <whb/proc.h>
 
 
-int main(void)
+int
+main(void)
 {
     printf("Hello world!\n");
     fprintf(stderr, "This is an ERROR message!\n");
@@ -22,6 +23,4 @@ int main(void)
             }
     }
     WHBProcShutdown();
-
-    return 0;
 }

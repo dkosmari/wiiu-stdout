@@ -15,7 +15,7 @@ include $(DEVKITPRO)/wut/share/wut_rules
 
 COMMON_FLAGS := -mcpu=750 -meabi -mhard-float \
 	-Wall -Wextra -Werror \
-	-Os -ffunction-sections
+	-Os -ffunction-sections -fdata-sections
 
 CPPFLAGS := \
 	-DESPRESSO \
@@ -23,9 +23,9 @@ CPPFLAGS := \
 	-D__WUT__ \
 	-I$(WUT_ROOT)/include
 
-CFLAGS := $(COMMON_FLAGS)
+CFLAGS := $(COMMON_FLAGS) -Wall -Wextra -Werror
 
-CXXFLAGS := $(COMMON_FLAGS) -std=c++23
+CXXFLAGS := $(COMMON_FLAGS) -std=c++23 -Wall -Wextra -Werror
 
 LDFLAGS := $(RPXSPECS) -L$(WUT_ROOT)/lib
 
@@ -48,23 +48,24 @@ clean:
 	$(RM) *.elf c/*.o cpp/*.o
 
 
-test-cout.elf: tests/test-cout.o \
-		cpp/stdout-wiiu.o
+test-cout.elf: 	tests/test-cout.o \
+		cpp/wiiu-stdout.o
 	$(CXX) -o $@ $^ $(CXXFLAGS) $(LIBS) $(LDFLAGS)
 
 
-test-cerr.elf: tests/test-cerr.o \
-		cpp/stdout-wiiu.o \
-		cpp/stderr-wiiu.o
+test-cerr.elf:	tests/test-cerr.o \
+		cpp/wiiu-stdout.o \
+		cpp/wiiu-stderr.o
 	$(CXX) -o $@ $^ $(CXXFLAGS) $(LIBS) $(LDFLAGS)
 
 
-test-stdout.elf: tests/test-stdout.o c/stdout-wiiu.o
+test-stdout.elf:	tests/test-stdout.o \
+			c/wiiu-stdout.o
 	$(CC) -o $@ $^ $(CFLAGS) $(LIBS) $(LDFLAGS)
 
-test-stderr.elf: tests/test-stderr.o \
-		c/stdout-wiiu.o \
-		c/stderr-wiiu.o
+test-stderr.elf:	tests/test-stderr.o \
+			c/wiiu-stdout.o \
+			c/wiiu-stderr.o
 	$(CC) -o $@ $^ $(CFLAGS) $(LIBS) $(LDFLAGS)
 
 

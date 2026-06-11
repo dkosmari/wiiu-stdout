@@ -12,6 +12,8 @@
 #ifndef WIIU_STDERR_H
 #define WIIU_STDERR_H
 
+#ifdef __WIIU__
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -26,5 +28,7 @@ wiiu_init_stderr(void);
 #ifdef __cplusplus
 }
 #endif
+
+#endif /* __WIIU__ */
 
 #endif

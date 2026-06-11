@@ -12,6 +12,10 @@
 #ifndef WIIU_STDOUT_HPP
 #define WIIU_STDOUT_HPP
 
+#ifdef __WIIU__
+
+#include <coreinit/mutex.h>
+
 /*
  * Call this manually when the automatic call doesn't work.
  * It's safe to call it multiple times.
@@ -42,5 +46,7 @@ wiiu_fini_whb_log()
  * Used by wiiu-stderr.cpp
  */
 extern OSMutex* wiiu_whb_log_mutex;
+
+#endif // __WIIU__
 
 #endif

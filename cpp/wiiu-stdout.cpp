@@ -16,7 +16,6 @@
 
 #include <sys/iosupport.h>      // devoptab_list, devoptab_t
 
-#include <coreinit/mutex.h>
 #include <whb/log.h>
 #include <whb/log_cafe.h>
 #include <whb/log_module.h>

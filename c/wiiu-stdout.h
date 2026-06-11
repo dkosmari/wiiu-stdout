@@ -12,6 +12,10 @@
 #ifndef WIIU_STDOUT_H
 #define WIIU_STDOUT_H
 
+#ifdef __WIIU__
+
+#include <coreinit/mutex.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -48,5 +52,7 @@ extern OSMutex* wiiu_whb_log_mutex;
 #ifdef __cplusplus
 }
 #endif
+
+#endif /* __WIIU__ */
 
 #endif

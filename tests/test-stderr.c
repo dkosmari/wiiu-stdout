@@ -9,7 +9,8 @@ int
 main(void)
 {
     printf("Hello world!\n");
-    fprintf(stderr, "This is an ERROR message!\n");
+    int value = 42;
+    fprintf(stderr, "This is an ERROR message: %d\n", value);
     printf("Press any button to quit.\n");
 
     WHBProcInit();

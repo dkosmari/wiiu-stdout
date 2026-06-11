@@ -22,6 +22,8 @@
 #include <whb/log_module.h>
 #include <whb/log_udp.h>
 
+#include "wiiu-stdout.hpp"
+
 
 OSMutex* wiiu_whb_log_mutex; // initialized by wiiu-stderr.cpp
 
@@ -32,6 +34,9 @@ namespace {
     bool module_initialized = false;
     bool udp_initialized    = false;
 
+    unsigned whb_log_refs  = 0;
+    unsigned devoptab_refs = 0;
+
 } // namespace
 
 
@@ -40,6 +45,8 @@ void
 wiiu_init_whb_log()
     noexcept
 {
+    if (whb_log_refs++)
+        return;
     module_initialized = WHBLogModuleInit();
     if (!module_initialized) {
         cafe_initialized = WHBLogCafeInit();
@@ -53,6 +60,10 @@ void
 wiiu_fini_whb_log()
     noexcept
 {
+    if (!whb_log_refs)
+        return;
+    if (--whb_log_refs)
+        return;
     if (module_initialized) {
         WHBLogModuleDeinit();
         module_initialized = false;
@@ -103,6 +114,10 @@ void
 wiiu_init_stdout()
     noexcept
 {
+    if (!whb_log_refs)
+        wiiu_init_whb_log();
+    if (devoptab_refs++)
+        return;
     static devoptab_t stdout_dev;
     stdout_dev.name = "STDOUT";
     stdout_dev.structSize = sizeof stdout_dev;

@@ -14,7 +14,8 @@ int
 main()
 {
     cout << "Hello world!" << endl;
-    cerr << "This is an ERROR message!" << endl;
+    int value = 42;
+    cerr << "This is an ERROR message: " << value << endl;
     cout << "Press any button to quit." << endl;
 
     WHBProcInit();

@@ -22,6 +22,8 @@
 #include <whb/log_module.h>
 #include <whb/log_udp.h>
 
+#include "wiiu-stdout.h"
+
 
 OSMutex* wiiu_whb_log_mutex; // initialized by wiiu-stderr.c
 
@@ -30,11 +32,16 @@ static bool cafe_initialized   = false;
 static bool module_initialized = false;
 static bool udp_initialized    = false;
 
+static unsigned whb_log_refs  = 0;
+static unsigned devoptab_refs = 0;
+
 
 __attribute__ (( __constructor__ (101) ))
 void
 wiiu_init_whb_log(void)
 {
+    if (whb_log_refs++)
+        return;
     module_initialized = WHBLogModuleInit();
     if (!module_initialized) {
         cafe_initialized = WHBLogCafeInit();
@@ -47,6 +54,10 @@ __attribute__ (( __destructor__ (101) ))
 void
 wiiu_fini_whb_log(void)
 {
+    if (!whb_log_refs)
+        return;
+    if (--whb_log_refs)
+        return;
     if (module_initialized) {
         WHBLogModuleDeinit();
         module_initialized = false;
@@ -95,6 +106,10 @@ __attribute__(( __constructor__ (102) ))
 void
 init_stdout(void)
 {
+    if (!whb_log_refs)
+        wiiu_init_whb_log();
+    if (devoptab_refs++)
+        return;
     static devoptab_t stdout_dev;
     stdout_dev.name = "STDOUT";
     stdout_dev.structSize = sizeof stdout_dev;

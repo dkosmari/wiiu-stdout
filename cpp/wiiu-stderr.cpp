@@ -15,21 +15,28 @@
 
 #include <sys/iosupport.h>      // devoptab_list, devoptab_t
 
+#include "wiiu-stderr.hpp"
+#include "wiiu-stdout.hpp"
 
-extern OSMutex* wiiu_whb_log_mutex;
 
 namespace {
 
     OSMutex the_real_mutex;
+    devoptab_t stderr_dev;
+
+    unsigned whb_log_mutex_refs = 0;
+    unsigned devoptab_refs      = 0;
 
 } // namespace
 
 
 __attribute__(( __constructor__ (101) ))
 void
-wiiu_init_wiiu_whb_log_mutex(void)
+wiiu_init_wiiu_whb_log_mutex()
     noexcept
 {
+    if (whb_log_mutex_refs++)
+        return;
     OSInitMutex(&the_real_mutex);
     wiiu_whb_log_mutex = &the_real_mutex;
 }
@@ -44,18 +51,15 @@ wiiu_devoptab_to_whb_log(struct _reent*,
     noexcept;
 
 
-namespace {
-
-    devoptab_t stderr_dev;
-
-} // namespace
-
-
 __attribute__(( __constructor__ (102) ))
 void
 wiiu_init_stderr()
     noexcept
 {
+    if (devoptab_refs++)
+        return;
+    if (!whb_log_mutex_refs)
+        wiiu_init_wiiu_whb_log_mutex();
     stderr_dev.name = "STDERR";
     stderr_dev.structSize = sizeof stderr_dev;
     stderr_dev.write_r = wiiu_devoptab_to_whb_log;

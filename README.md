@@ -16,3 +16,10 @@ To also get `stderr` support, you must also copy `wiiu-stderr.c` or `wiiu-stderr
 There is no need to call any function. Everything is initialized and cleaned up
 automatically, using GCC's `constructor`/`destructor` attributes.
 
+
+## Using as a library
+
+If you try to use this code in a library, the linker won't necessarily link the
+objects. You can include the corresponding `.hpp` or `.h` headers, and call
+`wiiu_init_stdout()`, `wiiu_init_stderr()` manually from your `main()` function, or any
+code that runs before `main()`. This should be enough to force the linker to use the functions.

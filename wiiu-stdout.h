@@ -21,33 +21,11 @@ extern "C" {
 #endif
 
 /*
- * Call this manually when the automatic call doesn't work.
+ * Call this manually when the automatic initialization doesn't work.
  * It's safe to call it multiple times.
  */
 void
 wiiu_init_stdout(void);
-
-/*
- * Call this manually when the automatic call doesn't work.
- * It's safe to call it multiple times.
- * This is called automatically by wiiu_init_stdout().
- */
-void
-wiiu_init_whb_log(void);
-
-/*
- * Call this manually when the automatic call doesn't work.
- * It's safe to call it multiple times.
- * If doing manual calls, this will ensure the log output is finalized.
- */
-void
-wiiu_fini_whb_log(void);
-
-/*
- * Used by wiiu-stderr.c
- */
-extern OSMutex* wiiu_whb_log_mutex;
-
 
 #ifdef __cplusplus
 }

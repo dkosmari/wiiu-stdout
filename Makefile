@@ -1,8 +1,6 @@
 TARGETS := \
-	test-cout.rpx \
-	test-cerr.rpx \
-	test-stdout.rpx \
-	test-stderr.rpx
+	test-iostream.rpx \
+	test-stdio.rpx
 
 
 ifeq ($(strip $(DEVKITPRO)),)
@@ -34,10 +32,8 @@ LIBS := -lwut
 
 .PHONY: all clean \
 	company \
-	run-test-cout \
-	run-test-cerr
-	run-test-stdout \
-	run-test-stderr
+	run-test-iostream \
+	run-test-stdio
 
 
 all: $(TARGETS)
@@ -45,27 +41,16 @@ all: $(TARGETS)
 
 clean:
 	$(RM) $(TARGETS)
-	$(RM) *.elf c/*.o cpp/*.o
+	$(RM) *.elf *.o tests/*.o
 
 
-test-cout.elf: 	tests/test-cout.o \
-		cpp/wiiu-stdout.o
+test-iostream.elf: 	tests/test-iostream.o \
+			wiiu-stdout.o
 	$(CXX) -o $@ $^ $(CXXFLAGS) $(LIBS) $(LDFLAGS)
 
 
-test-cerr.elf:	tests/test-cerr.o \
-		cpp/wiiu-stdout.o \
-		cpp/wiiu-stderr.o
-	$(CXX) -o $@ $^ $(CXXFLAGS) $(LIBS) $(LDFLAGS)
-
-
-test-stdout.elf:	tests/test-stdout.o \
-			c/wiiu-stdout.o
-	$(CC) -o $@ $^ $(CFLAGS) $(LIBS) $(LDFLAGS)
-
-test-stderr.elf:	tests/test-stderr.o \
-			c/wiiu-stdout.o \
-			c/wiiu-stderr.o
+test-stdio.elf:	tests/test-stdio.o \
+		wiiu-stdout.o
 	$(CC) -o $@ $^ $(CFLAGS) $(LIBS) $(LDFLAGS)
 
 
@@ -77,16 +62,11 @@ test-stderr.elf:	tests/test-stderr.o \
 
 
 
-run-test-cout: test-cout.rpx
+run-test-iostream: test-iostream.rpx
 	WIILOAD=tcp:wiiu wiiload $<
 
-run-test-cerr: test-cerr.rpx
-	WIILOAD=tcp:wiiu wiiload $<
 
-run-test-stdout: test-stdout.rpx
-	WIILOAD=tcp:wiiu wiiload $<
-
-run-test-stderr: test-stderr.rpx
+run-test-stdio: test-stdio.rpx
 	WIILOAD=tcp:wiiu wiiload $<
 
 

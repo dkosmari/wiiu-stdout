@@ -35,7 +35,7 @@ wiiu_devoptab_to_os(struct _reent*,
 
 __attribute__(( __constructor__ (101) ))
 void
-init_stdout(void)
+wiiu_init_stdout(void)
 {
     stdout_dev.name = "STDOUT";
     stdout_dev.structSize = sizeof stdout_dev;
